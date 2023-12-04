@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html class="no-js" lang="">
 <head>
   <meta charset="utf-8">
@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="css/font.css">
   <link rel="stylesheet" href="css/main.css">
 
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <script src="js/vendor/modernizr.js"></script>
 </head>
 <body class="page-home">
@@ -119,6 +120,16 @@
     </div>
   </section>
 
+  <!-- New Section: Real-time Weather -->
+  <section class="home-weather">
+    <div class="row column">
+      <h2 class="section-title">Current Weather</h2>
+      <div id="weather-container">
+        <p class="content">Loading weather...</p>
+      </div>
+    </div>
+  </section>
+
   <section class="kraken-callout">
     <div class="row">
       <div class="columns medium-6 xxlarge-4 xxlarge-offset-2">
@@ -128,7 +139,7 @@
       <div class="columns medium-6 xlarge-5 xxlarge-4">
         <h4 class="title">Coming Soon</h4>
         <p class="content">
-          Kraken 3xplorer and Dragon Flyght. We’re looking to provide you a full service package from air, land, and to sea.
+          Kraken 3xplorer and Dragon Flyght. We’re looking to provide you a full-service package from air, land, and to sea.
         </p>
       </div>
     </div>
@@ -158,7 +169,52 @@
   </footer>
 
   <script src="js/vendor.js"></script>
-
   <script src="js/main.js"></script>
-</body>
-</html>
+
+<!-- New Script: Real-time Weather with Geolocation and OpenWeatherMap API -->
+<script>
+  $(document).ready(function() {
+    // Check if the browser supports the Geolocation API
+    if (navigator.geolocation) {
+      // Get the user's current location
+      navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+    } else {
+      // Geolocation is not supported
+      console.log("Geolocation is not supported by this browser.");
+    }
+
+    // Success callback function
+    function successCallback(position) {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+
+      // Call the OpenWeatherMap API to get weather data
+      const apiKey = '94b888228e6424c4dc13a276d197cf29';
+      const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
+
+      // Fetch weather data
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          // Extract relevant weather information
+          const cityName = data.name;
+          const temperature = data.main.temp;
+          const weatherDescription = data.weather[0].description;
+
+          // Display weather information in the designated container
+          const weatherContainer = document.getElementById('weather-container');
+          weatherContainer.innerHTML = `
+            <p class="content">Current Weather in ${cityName}: ${temperature}°C, ${weatherDescription}</p>
+          `;
+        })
+        .catch(error => {
+          console.error('Error fetching weather data:', error);
+        });
+    }
+
+    // Error callback function
+    function errorCallback(error) {
+      console.error('Error getting user location:', error.message);
+    }
+  });
+</script>
