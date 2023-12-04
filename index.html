@@ -77,13 +77,9 @@
         const imageUrl = data.url;
 
         // Display NASA information below the weather
-        const nasaContainer = document.getElementById('nasa-container');
-        nasaContainer.innerHTML = `
-          <h2 class="section-title">NASA Astronomy Picture of the Day</h2>
-          <p class="content">${title}</p>
-          <p class="content">${explanation}</p>
-          <img src="${imageUrl}" alt="NASA APOD">
-        `;
+        document.getElementById('nasa-title').innerHTML = `<p>${title}</p>`;
+        document.getElementById('nasa-explanation').innerHTML = `<p>${explanation}</p>`;
+        document.getElementById('nasa-image').innerHTML = `<img src="${imageUrl}" alt="NASA APOD">`;
       })
       .catch(error => {
         console.error('Error fetching NASA data:', error);
@@ -104,8 +100,14 @@
     </div>
   </section>
 
-  <div id="nasa-container"></div>
-  
+<!-- Add this div where you want the NASA information to be displayed -->
+<div id="nasa-container">
+  <h2 class="section-title">NASA Astronomy Picture of the Day</h2>
+  <div class="content" id="nasa-title"></div>
+  <div class="content" id="nasa-explanation"></div>
+  <div id="nasa-image"></div>
+</div>
+
   <header class="site-header">
     <h1 class="title">Jeremy Tollison's Wild Rydes Site</h1>
     <nav class="site-nav">
