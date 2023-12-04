@@ -60,6 +60,37 @@
   });
 </script>
 
+<!-- New Script: NASA Astronomy Picture of the Day -->
+<script>
+  $(document).ready(function() {
+    // Call the NASA API to get the Astronomy Picture of the Day
+    const nasaApiKey = 'SIbchX92KQqDkfgZ180dKfh5ImGQFxrAIGqZA3gz'; // Replace with your NASA API key
+    const nasaApiUrl = `https://api.nasa.gov/planetary/apod?api_key=${nasaApiKey}`;
+
+    // Fetch NASA data
+    fetch(nasaApiUrl)
+      .then(response => response.json())
+      .then(data => {
+        // Extract relevant information
+        const title = data.title;
+        const explanation = data.explanation;
+        const imageUrl = data.url;
+
+        // Display NASA information below the weather
+        const nasaContainer = document.getElementById('nasa-container');
+        nasaContainer.innerHTML = `
+          <h2 class="section-title">NASA Astronomy Picture of the Day</h2>
+          <p class="content">${title}</p>
+          <p class="content">${explanation}</p>
+          <img src="${imageUrl}" alt="NASA APOD">
+        `;
+      })
+      .catch(error => {
+        console.error('Error fetching NASA data:', error);
+      });
+  });
+</script>
+
 </head>
 <body class="page-home">
 
