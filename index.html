@@ -61,7 +61,6 @@
 </script>
 
 <!-- New Script: NASA Astronomy Picture of the Day -->
-<!-- New Script: NASA Astronomy Picture of the Day -->
 <script>
   $(document).ready(function() {
     // Call the NASA API to get the Astronomy Picture of the Day
@@ -76,7 +75,7 @@
         const title = data.title;
         const explanation = data.explanation;
         const mediaType = data.media_type;
-        const mediaUrl = mediaType === 'image' ? data.url : data.url.replace('watch?v=', 'embed/');
+        const mediaUrl = data.url;
 
         // Display NASA information below the weather
         document.getElementById('nasa-title').innerHTML = `<p>${title}</p>`;
@@ -115,6 +114,8 @@
     }
   });
 </script>
+
+
 
 </head>
 <body class="page-home">
