@@ -61,6 +61,7 @@
 </script>
 
 <!-- New Script: NASA Astronomy Picture of the Day -->
+<!-- New Script: NASA Astronomy Picture of the Day -->
 <script>
   $(document).ready(function() {
     // Call the NASA API to get the Astronomy Picture of the Day
@@ -74,23 +75,44 @@
         // Extract relevant information
         const title = data.title;
         const explanation = data.explanation;
-        const imageUrl = data.url;
+        const mediaType = data.media_type;
+        const mediaUrl = mediaType === 'image' ? data.url : data.url.replace('watch?v=', 'embed/');
 
         // Display NASA information below the weather
         document.getElementById('nasa-title').innerHTML = `<p>${title}</p>`;
         document.getElementById('nasa-explanation').innerHTML = `<p>${explanation}</p>`;
 
-        // Use an iframe to embed the image
-        const iframe = document.createElement('iframe');
-        iframe.setAttribute('src', imageUrl);
-        iframe.setAttribute('width', '100%');
-        iframe.setAttribute('height', '400px');
-        iframe.setAttribute('frameborder', '0');
-        document.getElementById('nasa-image').appendChild(iframe);
+        // Create either an <img> or <iframe> based on media type
+        const mediaElement = mediaType === 'image'
+          ? createImageElement(mediaUrl)
+          : createIframeElement(mediaUrl);
+
+        // Append the media element to the container
+        document.getElementById('nasa-media').appendChild(mediaElement);
       })
       .catch(error => {
         console.error('Error fetching NASA data:', error);
       });
+
+    // Function to create an <img> element
+    function createImageElement(src) {
+      const img = document.createElement('img');
+      img.setAttribute('src', src);
+      img.setAttribute('width', '100%');
+      img.setAttribute('height', '400px');
+      img.setAttribute('alt', 'NASA Image');
+      return img;
+    }
+
+    // Function to create an <iframe> element
+    function createIframeElement(src) {
+      const iframe = document.createElement('iframe');
+      iframe.setAttribute('src', src);
+      iframe.setAttribute('width', '100%');
+      iframe.setAttribute('height', '400px');
+      iframe.setAttribute('frameborder', '0');
+      return iframe;
+    }
   });
 </script>
 
